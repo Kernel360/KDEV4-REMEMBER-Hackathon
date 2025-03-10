@@ -1,4 +1,4 @@
-package dev.laterre.nyamnyam.replie.entity;
+package dev.laterre.nyamnyam.reply.entity;
 
 import dev.laterre.nyamnyam.post.entity.Post;
 import jakarta.persistence.Column;
