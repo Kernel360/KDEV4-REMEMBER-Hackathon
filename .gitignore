@@ -355,5 +355,6 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-## Server env ##
+## Server Ex ##
 .env*
+src/main/resources/application-*.yml
