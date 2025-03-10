@@ -354,3 +354,6 @@ gradle-app.setting
 ### Gradle Patch ###
 # Java heap dump
 *.hprof
+
+## Server env ##
+.env*
