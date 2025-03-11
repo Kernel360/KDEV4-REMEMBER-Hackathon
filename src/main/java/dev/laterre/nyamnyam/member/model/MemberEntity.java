@@ -1,18 +1,18 @@
-package dev.laterre.nyamnyam.member.entity;
+package dev.laterre.nyamnyam.member.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Entity
+@Entity(name="member")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Member {
+public class MemberEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
