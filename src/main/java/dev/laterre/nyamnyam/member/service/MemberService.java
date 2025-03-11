@@ -1,5 +1,6 @@
 package dev.laterre.nyamnyam.member.service;
 
+import dev.laterre.nyamnyam.member.dto.MemberRequestDto;
 import dev.laterre.nyamnyam.member.dto.MemberUpdateDto;
 import dev.laterre.nyamnyam.member.entity.Member;
 import dev.laterre.nyamnyam.member.repository.MemberRepository;
@@ -21,22 +22,37 @@ public class MemberService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Member save(Member member) {
-        return memberRepository.save(member);
+    public MemberRequestDto save(MemberRequestDto memberRequestDto) {
+        Member member = new Member();
+        member.setEmail(memberRequestDto.getEmail());
+        member.setMemberRealId(memberRequestDto.getMemberRealId());
+        member.setPassword(memberRequestDto.getPassword());
+        member.setNickname(memberRequestDto.getNickname());
+        member.setRole(memberRequestDto.getRole());
+
+        memberRepository.save(member);
+
+        return memberRequestDto;
     }
 
-    public Member findMember(Long id) {
+    public MemberRequestDto findMember(Long id) {
         Optional<Member> member = memberRepository.findById(id);
 
         if (member.isPresent()) {
-            return member.get();
+            MemberRequestDto memberRequestDto = new MemberRequestDto();
+            memberRequestDto.setMemberRealId(member.get().getMemberRealId());
+            memberRequestDto.setPassword(member.get().getPassword());
+            memberRequestDto.setEmail(member.get().getEmail());
+            memberRequestDto.setNickname(member.get().getNickname());
+            memberRequestDto.setRole(member.get().getRole());
+            return memberRequestDto;
         } else {
             throw new RuntimeException("존재하지 않는 유저입니다.");
         }
     }
 
     @Transactional
-    public Member updateMember(Long id, MemberUpdateDto memberUpdateDto) {
+    public MemberRequestDto updateMember(Long id, MemberUpdateDto memberUpdateDto) {
 
         Optional<Member> member = memberRepository.findById(id);
         Member memberResult;
@@ -52,7 +68,16 @@ public class MemberService {
         memberResult.setNickname(memberUpdateDto.getNickname());
         memberResult.setRole(memberUpdateDto.getRole());
 
-        return memberRepository.save(memberResult);
+        Member savedMember = memberRepository.save(memberResult);
+
+        MemberRequestDto memberRequestDto = new MemberRequestDto();
+        memberRequestDto.setMemberRealId(savedMember.getMemberRealId());
+        memberRequestDto.setPassword(savedMember.getPassword());
+        memberRequestDto.setEmail(savedMember.getEmail());
+        memberRequestDto.setNickname(savedMember.getNickname());
+        memberRequestDto.setRole(savedMember.getRole());
+
+        return memberRequestDto;
     }
 
 
