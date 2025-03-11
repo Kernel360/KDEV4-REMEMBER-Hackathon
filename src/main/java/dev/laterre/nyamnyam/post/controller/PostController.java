@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/post")
 public class PostController {
 
@@ -47,7 +48,7 @@ public class PostController {
     // 게시판별 모든 게시글 조회
     @GetMapping("/{boardId}")
     public List<PostDto> getPosts(@PathVariable("boardId") Long boardId) {
-        log.info("temp {}", boardId);
+        log.info("boardId {}", boardId);
         return postService.findPosts(boardId);
     }
 
