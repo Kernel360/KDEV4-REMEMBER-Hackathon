@@ -1,5 +1,6 @@
 package dev.laterre.nyamnyam.post.service;
 
+import dev.laterre.nyamnyam.likes.repository.LikesRepository;
 import dev.laterre.nyamnyam.member.model.MemberEntity;
 import dev.laterre.nyamnyam.member.repository.MemberRepository;
 import dev.laterre.nyamnyam.post.dto.PostDto;
@@ -8,6 +9,8 @@ import dev.laterre.nyamnyam.post.model.PostEntity;
 import dev.laterre.nyamnyam.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +29,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final LikesRepository likesRepository;
 
     // 게시글 저장(생성)
     @Transactional
@@ -43,6 +47,7 @@ public class PostService {
         postEntity.setContent(postDto.getContent());
         postEntity.setShopName(postDto.getShopName());
         postEntity.setCategory(postDto.getCategory());
+        postEntity.setMediaData(postDto.getMediaData());
 
         postRepository.save(postEntity);
 
@@ -56,13 +61,17 @@ public class PostService {
             List<PostDto> postDtoList = postEntities.stream()
                     .map(post -> {
                         PostDto postDto = new PostDto();
+                        postDto.setId(post.getId());
                         postDto.setBoardId(post.getBoardId());
                         postDto.setMemberId(post.getMember().getId());
+                        postDto.setNickname(post.getMember().getNickname());
                         postDto.setAddress(post.getAddress());
                         postDto.setShopName(post.getShopName());
                         postDto.setCategory(post.getCategory());
                         postDto.setTitle(post.getTitle());
                         postDto.setContent(post.getContent());
+                        postDto.setMediaData(post.getMediaData());
+                        postDto.setLikes(likesRepository.countByPostId(post.getId()));
 
                         return postDto;
                     }).collect(Collectors.toList());
@@ -79,20 +88,53 @@ public class PostService {
         Optional<PostEntity> postOptional = postRepository.findById(id);
 
         if (postOptional.isPresent()) {
+                log.info("findPost : {}", postOptional.get());
                 PostEntity postEntity = postOptional.get();
                 PostDto postDto = new PostDto();
+                postDto.setId(postEntity.getId());
                 postDto.setBoardId(postEntity.getBoardId());
                 postDto.setMemberId(postEntity.getMember().getId());
                 postDto.setAddress(postEntity.getAddress());
+                postDto.setNickname(postEntity.getMember().getNickname());
                 postDto.setShopName(postEntity.getShopName());
                 postDto.setCategory(postEntity.getCategory());
                 postDto.setTitle(postEntity.getTitle());
                 postDto.setContent(postEntity.getContent());
+                postDto.setMediaData(postEntity.getMediaData());
+                postDto.setLikes(likesRepository.countByPostId(postEntity.getId()));
 
                 return postDto;
         } else {
             throw new RuntimeException("존재하지 않는 게시글입니다.");
         }
+    }
+
+    @Transactional
+    public PostDto findTopPost(Long boardId) {
+        List<PostEntity> postEntities = postRepository.findByBoardId(boardId);
+            List<PostDto> postDtoList = postEntities.stream()
+                    .map(post -> {
+                        PostDto postDto = new PostDto();
+                        postDto.setId(post.getId());
+                        postDto.setBoardId(post.getBoardId());
+                        postDto.setMemberId(post.getMember().getId());
+                        postDto.setNickname(post.getMember().getNickname());
+                        postDto.setAddress(post.getAddress());
+                        postDto.setShopName(post.getShopName());
+                        postDto.setCategory(post.getCategory());
+                        postDto.setTitle(post.getTitle());
+                        postDto.setContent(post.getContent());
+                        postDto.setMediaData(post.getMediaData());
+                        postDto.setLikes(likesRepository.countByPostId(post.getId()));
+
+                        return postDto;
+                    }).collect(Collectors.toList());
+
+                    var result = postDtoList.stream()
+                    .max((p1, p2) -> Integer.compare(Math.toIntExact(p1.getLikes()), Math.toIntExact(p2.getLikes()))).get();
+
+                    log.info("postDtoList : {}", postDtoList);
+                    return result;
     }
 
     // 특정 게시글 수정
@@ -117,6 +159,7 @@ public class PostService {
         PostEntity savedPostEntity = postRepository.save(postEntityResult);
 
         PostDto postDto = new PostDto();
+        postDto.setId(savedPostEntity.getId());
         postDto.setBoardId(savedPostEntity.getBoardId());
         postDto.setMemberId(savedPostEntity.getMember().getId());
         postDto.setShopName(savedPostEntity.getShopName());

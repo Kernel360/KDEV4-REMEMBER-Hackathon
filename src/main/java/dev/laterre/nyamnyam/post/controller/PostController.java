@@ -33,6 +33,7 @@ public class PostController {
         if (mediaData != null) {
             String encodedMediaData = postService.encodeFileToBase64(mediaData);
             postDto.setMediaData(encodedMediaData);
+            log.info("mediaData : {}",encodedMediaData);
         }
 
       return postService.save(postDto);
@@ -46,12 +47,19 @@ public class PostController {
     }
 
     // 특정 게시글 조회
-    @GetMapping("/{boardId}/{id}")
-    public PostDto getPost(@PathVariable("boardId") Long boardId, @PathVariable("id") Long id) {
+    @GetMapping("/id/{id}")
+    public PostDto getPost(@PathVariable("id") Long id) {
         PostDto postDto = postService.findPost(id);
-        log.info("boardId: {}", boardId);
-
+        log.info("postId : {}", id);
         return postDto;
+    }
+
+    // 특정 게시글 조회
+    @GetMapping("/{boardId}/topone")
+    public PostDto getTopOne(
+            @PathVariable(name = "boardId") Long boardId
+    ) {
+        return postService.findTopPost(boardId);
     }
 
     // 특정 게시글 수정

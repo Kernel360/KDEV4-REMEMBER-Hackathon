@@ -16,10 +16,15 @@ import lombok.Setter;
 public class PostDto {
 
     @NotBlank
+    private Long Id;
+
+    @NotBlank
     private Long boardId;
 
     @NotBlank
     private Long memberId;
+
+    private String nickname;
 
     private String address;
 
@@ -33,6 +38,8 @@ public class PostDto {
 
     @NotBlank
     private String content;
+
+    private Long likes;
 
     private String mediaData;
 }

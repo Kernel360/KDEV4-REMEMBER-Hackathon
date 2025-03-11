@@ -8,6 +8,4 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     public List<PostEntity> findByBoardId(Long boardId);
-
-
 }

@@ -11,10 +11,11 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity(name="post")
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostEntity {
 
