@@ -6,17 +6,21 @@ import dev.laterre.nyamnyam.post.dto.PostDto;
 import dev.laterre.nyamnyam.post.dto.PostUpdateDto;
 import dev.laterre.nyamnyam.post.entity.Post;
 import dev.laterre.nyamnyam.post.repository.PostRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
@@ -38,6 +42,12 @@ public class PostService {
         post.setContent(postDto.getContent());
         post.setShopName(postDto.getShopName());
         post.setCategory(postDto.getCategory());
+
+        // 파일 업로드 처리
+        if (postDto.getMediaData() != null) {
+          String mediaData = postDto.getMediaData();
+          post.setMediaData(mediaData);
+        }
 
         postRepository.save(post);
 
@@ -128,4 +138,14 @@ public class PostService {
     public void deletePost(Long id) {
         postRepository.deleteById(id);
     }
+
+  public String encodeFileToBase64(MultipartFile file) {
+    try {
+      byte[] fileBytes = file.getBytes();
+      return Base64.getEncoder().encodeToString(fileBytes);
+    } catch (IOException e) {
+      log.info(e.getMessage());
+      return null;
+    }
+  }
 }
