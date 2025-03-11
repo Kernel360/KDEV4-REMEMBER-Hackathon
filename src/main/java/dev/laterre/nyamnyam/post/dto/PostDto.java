@@ -23,6 +23,8 @@ public class PostDto {
 
     private String address;
 
+    private String shopName;
+
     @NotBlank
     private String category;
 

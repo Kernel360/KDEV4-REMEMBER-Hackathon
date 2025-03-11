@@ -35,6 +35,7 @@ public class PostService {
         post.setAddress(postDto.getAddress());
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
+        post.setShopName(post.getShopName());
         post.setCategory(postDto.getCategory());
 
         postRepository.save(post);

@@ -29,6 +29,9 @@ public class Post {
   private String content;
 
   @Column
+  private String shopName;
+
+  @Column
   private String address;
 
   @Column
