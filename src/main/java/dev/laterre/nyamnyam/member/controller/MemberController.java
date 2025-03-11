@@ -21,21 +21,21 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public MemberRequestDto getMember(@PathVariable Long id) {
+    public MemberRequestDto getMember(@PathVariable("id") Long id) {
         MemberRequestDto memberRequestDto = memberService.findMember(id);
 
         return memberRequestDto;
     }
 
     @PutMapping("/{id}")
-    public MemberRequestDto updateMember(@PathVariable Long id, @RequestBody MemberUpdateDto memberUpdateDto) {
+    public MemberRequestDto updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateDto memberUpdateDto) {
         MemberRequestDto memberRequestDto = memberService.updateMember(id, memberUpdateDto);
 
         return memberRequestDto;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMember(@PathVariable Long id) {
+    public void deleteMember(@PathVariable("id") Long id) {
         memberService.deleteMember(id);
     }
 }

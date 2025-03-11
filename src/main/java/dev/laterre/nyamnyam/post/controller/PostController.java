@@ -31,14 +31,14 @@ public class PostController {
 
     // 게시판별 모든 게시글 조회
     @GetMapping("/{boardId}")
-    public List<PostDto> getPosts(@PathVariable Long boardId) {
+    public List<PostDto> getPosts(@PathVariable("boardId") Long boardId) {
         log.info("temp {}", boardId);
         return postService.findPosts(boardId);
     }
 
     // 특정 게시글 조회
     @GetMapping("/{boardId}/{id}")
-    public PostDto getPost(@PathVariable Long boardId, @PathVariable Long id) {
+    public PostDto getPost(@PathVariable("boardId") Long boardId, @PathVariable("id") Long id) {
         PostDto postDto = postService.findPost(id);
         log.info("boardId: {}", boardId);
 
@@ -47,7 +47,7 @@ public class PostController {
 
     // 특정 게시글 수정
     @PutMapping("/{boardId}/{id}")
-    public PostDto updatePost(@PathVariable Long boardId, @PathVariable Long id, @RequestBody PostUpdateDto postUpdateDto) {
+    public PostDto updatePost(@PathVariable("boardId") Long boardId, @PathVariable("id") Long id, @RequestBody PostUpdateDto postUpdateDto) {
         PostDto postDto = postService.updatePost(id, postUpdateDto);
         log.info("boardId: {}", boardId);
 
@@ -56,7 +56,7 @@ public class PostController {
 
     // 특정 게시글 삭제
     @DeleteMapping("/{boardId}/{id}")
-    public void deletePost(@PathVariable Long boardId, @PathVariable Long id) {
+    public void deletePost(@PathVariable("boardId") Long boardId, @PathVariable("id") Long id) {
         postService.deletePost(id);
         log.info("boardId: {}", boardId);
     }

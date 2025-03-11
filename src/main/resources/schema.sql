@@ -18,6 +18,7 @@
 -- content varchar(255),
 -- address varchar(255),
 -- category varchar(255),
+-- shop_name varchar(255),
 -- member_id bigint,
 -- board_id bigint,
 -- primary key (id)

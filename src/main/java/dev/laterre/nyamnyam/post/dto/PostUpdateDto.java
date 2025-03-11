@@ -18,5 +18,7 @@ public class PostUpdateDto {
 
     private String category;
 
+    private String shopName;
+
     // private List<File> file;
 }

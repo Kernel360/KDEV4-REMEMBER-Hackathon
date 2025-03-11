@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class PostService {
         post.setAddress(postDto.getAddress());
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        post.setShopName(post.getShopName());
+        post.setShopName(postDto.getShopName());
         post.setCategory(postDto.getCategory());
 
         postRepository.save(post);
@@ -46,21 +47,26 @@ public class PostService {
     // 게시판별 모든 게시글 조회
     public List<PostDto> findPosts(Long boardId) {
         List<Post> posts = postRepository.findByBoardId(boardId);
+        try {
+            List<PostDto> postDtoList = posts.stream()
+                    .map(post -> {
+                        PostDto postDto = new PostDto();
+                        postDto.setBoardId(post.getBoardId());
+                        postDto.setMemberId(post.getMember().getId());
+                        postDto.setAddress(post.getAddress());
+                        postDto.setShopName(post.getShopName());
+                        postDto.setCategory(post.getCategory());
+                        postDto.setTitle(post.getTitle());
+                        postDto.setContent(post.getContent());
 
-        List<PostDto> postDtoList = posts.stream()
-                .map(post -> {
-                    PostDto postDto = new PostDto();
-                    postDto.setBoardId(post.getBoardId());
-                    postDto.setMemberId(post.getMember().getId());
-                    postDto.setAddress(post.getAddress());
-                    postDto.setCategory(post.getCategory());
-                    postDto.setTitle(post.getTitle());
-                    postDto.setContent(post.getContent());
+                        return postDto;
+                    }).collect(Collectors.toList());
 
-                    return postDto;
-                }).collect(Collectors.toList());
-
-        return postDtoList;
+            return postDtoList;
+        } catch (Exception e) {
+            List<PostDto> list = new ArrayList<>();
+            return list;
+        }
     }
 
     // 특정 게시글 조회
@@ -68,16 +74,17 @@ public class PostService {
         Optional<Post> postOptional = postRepository.findById(id);
 
         if (postOptional.isPresent()) {
-            Post post = postOptional.get();
-            PostDto postDto = new PostDto();
-            postDto.setBoardId(post.getBoardId());
-            postDto.setMemberId(post.getMember().getId());
-            postDto.setAddress(post.getAddress());
-            postDto.setCategory(post.getCategory());
-            postDto.setTitle(post.getTitle());
-            postDto.setContent(post.getContent());
+                Post post = postOptional.get();
+                PostDto postDto = new PostDto();
+                postDto.setBoardId(post.getBoardId());
+                postDto.setMemberId(post.getMember().getId());
+                postDto.setAddress(post.getAddress());
+                postDto.setShopName(post.getShopName());
+                postDto.setCategory(post.getCategory());
+                postDto.setTitle(post.getTitle());
+                postDto.setContent(post.getContent());
 
-            return postDto;
+                return postDto;
         } else {
             throw new RuntimeException("존재하지 않는 게시글입니다.");
         }
@@ -100,12 +107,14 @@ public class PostService {
         postResult.setContent(postUpdateDto.getContent());
         postResult.setAddress(postUpdateDto.getAddress());
         postResult.setCategory(postUpdateDto.getCategory());
+        postResult.setShopName(postUpdateDto.getShopName());
 
         Post savedPost = postRepository.save(postResult);
 
         PostDto postDto = new PostDto();
         postDto.setBoardId(savedPost.getBoardId());
         postDto.setMemberId(savedPost.getMember().getId());
+        postDto.setShopName(savedPost.getShopName());
         postDto.setAddress(savedPost.getAddress());
         postDto.setCategory(savedPost.getCategory());
         postDto.setTitle(savedPost.getTitle());
