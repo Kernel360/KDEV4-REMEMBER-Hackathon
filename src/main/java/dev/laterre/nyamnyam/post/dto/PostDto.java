@@ -33,4 +33,6 @@ public class PostDto {
 
     @NotBlank
     private String content;
+
+    private String mediaData;
 }
