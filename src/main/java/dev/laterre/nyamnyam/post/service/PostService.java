@@ -4,7 +4,7 @@ import dev.laterre.nyamnyam.member.model.MemberEntity;
 import dev.laterre.nyamnyam.member.repository.MemberRepository;
 import dev.laterre.nyamnyam.post.dto.PostDto;
 import dev.laterre.nyamnyam.post.dto.PostUpdateDto;
-import dev.laterre.nyamnyam.post.entity.Post;
+import dev.laterre.nyamnyam.post.model.PostEntity;
 import dev.laterre.nyamnyam.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,30 +30,30 @@ public class PostService {
     // 게시글 저장(생성)
     @Transactional
     public PostDto save(PostDto postDto) {
-        Post post = new Post();
-        post.setBoardId(postDto.getBoardId());
+        PostEntity postEntity = new PostEntity();
+        postEntity.setBoardId(postDto.getBoardId());
         Optional<MemberEntity> memberOptional = memberRepository.findById(postDto.getMemberId());
         if (memberOptional.isPresent()) {
-            post.setMember(memberOptional.get());
+            postEntity.setMember(memberOptional.get());
         } else {
             throw new RuntimeException("존재하지 않는 유저입니다.");
         }
-        post.setAddress(postDto.getAddress());
-        post.setTitle(postDto.getTitle());
-        post.setContent(postDto.getContent());
-        post.setShopName(postDto.getShopName());
-        post.setCategory(postDto.getCategory());
+        postEntity.setAddress(postDto.getAddress());
+        postEntity.setTitle(postDto.getTitle());
+        postEntity.setContent(postDto.getContent());
+        postEntity.setShopName(postDto.getShopName());
+        postEntity.setCategory(postDto.getCategory());
 
-        postRepository.save(post);
+        postRepository.save(postEntity);
 
         return postDto;
     }
 
     // 게시판별 모든 게시글 조회
     public List<PostDto> findPosts(Long boardId) {
-        List<Post> posts = postRepository.findByBoardId(boardId);
+        List<PostEntity> postEntities = postRepository.findByBoardId(boardId);
         try {
-            List<PostDto> postDtoList = posts.stream()
+            List<PostDto> postDtoList = postEntities.stream()
                     .map(post -> {
                         PostDto postDto = new PostDto();
                         postDto.setBoardId(post.getBoardId());
@@ -76,18 +76,18 @@ public class PostService {
 
     // 특정 게시글 조회
     public PostDto findPost(Long id) {
-        Optional<Post> postOptional = postRepository.findById(id);
+        Optional<PostEntity> postOptional = postRepository.findById(id);
 
         if (postOptional.isPresent()) {
-                Post post = postOptional.get();
+                PostEntity postEntity = postOptional.get();
                 PostDto postDto = new PostDto();
-                postDto.setBoardId(post.getBoardId());
-                postDto.setMemberId(post.getMember().getId());
-                postDto.setAddress(post.getAddress());
-                postDto.setShopName(post.getShopName());
-                postDto.setCategory(post.getCategory());
-                postDto.setTitle(post.getTitle());
-                postDto.setContent(post.getContent());
+                postDto.setBoardId(postEntity.getBoardId());
+                postDto.setMemberId(postEntity.getMember().getId());
+                postDto.setAddress(postEntity.getAddress());
+                postDto.setShopName(postEntity.getShopName());
+                postDto.setCategory(postEntity.getCategory());
+                postDto.setTitle(postEntity.getTitle());
+                postDto.setContent(postEntity.getContent());
 
                 return postDto;
         } else {
@@ -99,31 +99,31 @@ public class PostService {
     @Transactional
     public PostDto updatePost(Long id, PostUpdateDto postUpdateDto) {
         // TODO postUpdateDto에 파일 수정 넣을지 말지
-        Optional<Post> post = postRepository.findById(id);
-        Post postResult;
+        Optional<PostEntity> post = postRepository.findById(id);
+        PostEntity postEntityResult;
 
         if (post.isPresent()) {
-            postResult = post.get();
+            postEntityResult = post.get();
         } else {
             throw new RuntimeException("존재하지 않는 게시글입니다.");
         }
 
-        postResult.setTitle(postUpdateDto.getTitle());
-        postResult.setContent(postUpdateDto.getContent());
-        postResult.setAddress(postUpdateDto.getAddress());
-        postResult.setCategory(postUpdateDto.getCategory());
-        postResult.setShopName(postUpdateDto.getShopName());
+        postEntityResult.setTitle(postUpdateDto.getTitle());
+        postEntityResult.setContent(postUpdateDto.getContent());
+        postEntityResult.setAddress(postUpdateDto.getAddress());
+        postEntityResult.setCategory(postUpdateDto.getCategory());
+        postEntityResult.setShopName(postUpdateDto.getShopName());
 
-        Post savedPost = postRepository.save(postResult);
+        PostEntity savedPostEntity = postRepository.save(postEntityResult);
 
         PostDto postDto = new PostDto();
-        postDto.setBoardId(savedPost.getBoardId());
-        postDto.setMemberId(savedPost.getMember().getId());
-        postDto.setShopName(savedPost.getShopName());
-        postDto.setAddress(savedPost.getAddress());
-        postDto.setCategory(savedPost.getCategory());
-        postDto.setTitle(savedPost.getTitle());
-        postDto.setContent(savedPost.getContent());
+        postDto.setBoardId(savedPostEntity.getBoardId());
+        postDto.setMemberId(savedPostEntity.getMember().getId());
+        postDto.setShopName(savedPostEntity.getShopName());
+        postDto.setAddress(savedPostEntity.getAddress());
+        postDto.setCategory(savedPostEntity.getCategory());
+        postDto.setTitle(savedPostEntity.getTitle());
+        postDto.setContent(savedPostEntity.getContent());
 
         return postDto;
     }

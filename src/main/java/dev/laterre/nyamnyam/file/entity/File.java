@@ -2,7 +2,7 @@ package dev.laterre.nyamnyam.file.entity;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import dev.laterre.nyamnyam.post.entity.Post;
+import dev.laterre.nyamnyam.post.model.PostEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,5 +36,5 @@ public class File {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
-  private Post post;
+  private PostEntity postEntity;
 }

@@ -3,7 +3,7 @@ package dev.laterre.nyamnyam.likes.entity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import dev.laterre.nyamnyam.member.model.MemberEntity;
-import dev.laterre.nyamnyam.post.entity.Post;
+import dev.laterre.nyamnyam.post.model.PostEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,5 +33,5 @@ public class Likes {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
-  private Post post;
+  private PostEntity postEntity;
 }

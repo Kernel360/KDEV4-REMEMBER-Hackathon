@@ -1,4 +1,4 @@
-package dev.laterre.nyamnyam.post.entity;
+package dev.laterre.nyamnyam.post.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Post {
+public class PostEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
