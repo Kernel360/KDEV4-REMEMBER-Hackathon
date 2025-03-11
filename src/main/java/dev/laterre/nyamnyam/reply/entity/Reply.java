@@ -1,5 +1,7 @@
 package dev.laterre.nyamnyam.reply.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import dev.laterre.nyamnyam.post.entity.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,16 +17,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Reply {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
-  private String displayName;
+  @Column
+  private String nickname;
 
-  @Column(nullable = false)
+  @Column
   private String content;
 
   @ManyToOne

@@ -1,6 +1,9 @@
 package dev.laterre.nyamnyam.post.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import dev.laterre.nyamnyam.file.entity.File;
+<<<<<<< HEAD
 import dev.laterre.nyamnyam.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,35 +17,53 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AccessLevel;
+import dev.laterre.nyamnyam.member.entity.Member;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Post {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
+  @Column
   private String title;
 
-  @Column(nullable = false)
+  @Column
   private String content;
 
-  @Column(nullable = false)
+  @Column
+  private String shopName;
+
+  @Column
   private String address;
 
-  @Column(nullable = false)
+  @Column
   private String category;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
 
-  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<File> files = new ArrayList<>();
+  @ManyToOne
+  @JoinColumn(name = "member_id")
+  private Member member;
+
+  @OneToMany
+  //@JoinColumn(name = "file_id")
+  private List<File> file;
+
+//  @ManyToOne
+//  @JoinColumn(name= "board_id")
+//  private Board board;
+
+  private Long boardId;
+
 }

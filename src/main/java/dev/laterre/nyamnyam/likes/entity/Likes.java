@@ -1,7 +1,9 @@
-package dev.laterre.nyamnyam.like.entity;
+package dev.laterre.nyamnyam.likes.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import dev.laterre.nyamnyam.post.entity.Post;
-import dev.laterre.nyamnyam.user.entity.User;
+import dev.laterre.nyamnyam.member.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,15 +20,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "likes")
-public class Like {
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class Likes {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
-  private User user;
+  @JoinColumn(name = "member_id")
+  private Member member;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
