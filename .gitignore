@@ -355,5 +355,5 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-## Server env ##
+## Spring 전역 env args ##
 .env*
