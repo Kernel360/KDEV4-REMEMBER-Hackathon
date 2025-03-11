@@ -1,6 +1,6 @@
 package dev.laterre.nyamnyam.post.service;
 
-import dev.laterre.nyamnyam.member.entity.Member;
+import dev.laterre.nyamnyam.member.model.MemberEntity;
 import dev.laterre.nyamnyam.member.repository.MemberRepository;
 import dev.laterre.nyamnyam.post.dto.PostDto;
 import dev.laterre.nyamnyam.post.dto.PostUpdateDto;
@@ -31,7 +31,7 @@ public class PostService {
     public PostDto save(PostDto postDto) {
         Post post = new Post();
         post.setBoardId(postDto.getBoardId());
-        Optional<Member> memberOptional = memberRepository.findById(postDto.getMemberId());
+        Optional<MemberEntity> memberOptional = memberRepository.findById(postDto.getMemberId());
         if (memberOptional.isPresent()) {
             post.setMember(memberOptional.get());
         } else {

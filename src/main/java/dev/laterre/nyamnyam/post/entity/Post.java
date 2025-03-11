@@ -47,7 +47,7 @@ public class Post {
 
   @ManyToOne
   @JoinColumn(name = "member_id")
-  private Member member;
+  private MemberEntity member;
 
   @OneToMany
   //@JoinColumn(name = "file_id")
