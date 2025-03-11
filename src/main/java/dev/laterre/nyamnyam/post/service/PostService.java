@@ -7,6 +7,7 @@ import dev.laterre.nyamnyam.post.dto.PostUpdateDto;
 import dev.laterre.nyamnyam.post.entity.Post;
 import dev.laterre.nyamnyam.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -61,7 +63,7 @@ public class PostService {
 
                         return postDto;
                     }).collect(Collectors.toList());
-
+            log.info("postDtoList : {}", postDtoList);
             return postDtoList;
         } catch (Exception e) {
             List<PostDto> list = new ArrayList<>();
