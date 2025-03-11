@@ -3,7 +3,7 @@ package dev.laterre.nyamnyam.post.entity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import dev.laterre.nyamnyam.file.entity.File;
-import dev.laterre.nyamnyam.member.entity.Member;
+import dev.laterre.nyamnyam.member.model.MemberEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +40,7 @@ public class Post {
 
   @ManyToOne
   @JoinColumn(name = "member_id")
-  private Member member;
+  private MemberEntity member;
 
   @OneToMany
   //@JoinColumn(name = "file_id")
