@@ -5,13 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
   @Id
@@ -25,7 +25,7 @@ public class User {
   private String password;
 
   @Column(nullable = false)
-  private String displayName;
+  private String nickname;
 
   @Column(nullable = false)
   private String role;
