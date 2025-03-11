@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://nyamnyam-frontend.vercel.app/"})
 public class MemberController {
 
     private final MemberService memberService;
