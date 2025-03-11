@@ -10,8 +10,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -129,5 +132,15 @@ public class PostService {
     @Transactional
     public void deletePost(Long id) {
         postRepository.deleteById(id);
+    }
+
+    public String encodeFileToBase64(MultipartFile file) {
+        try {
+            byte[] fileBytes = file.getBytes();
+            return Base64.getEncoder().encodeToString(fileBytes);
+        } catch (IOException e) {
+            log.info(e.getMessage());
+            return null;
+        }
     }
 }
