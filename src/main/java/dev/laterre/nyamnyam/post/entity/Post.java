@@ -1,5 +1,6 @@
 package dev.laterre.nyamnyam.post.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import dev.laterre.nyamnyam.file.entity.File;
@@ -44,6 +45,7 @@ public class Post {
 
   @OneToMany
   //@JoinColumn(name = "file_id")
+  @JsonIgnore
   private List<File> file;
 
 //  @ManyToOne

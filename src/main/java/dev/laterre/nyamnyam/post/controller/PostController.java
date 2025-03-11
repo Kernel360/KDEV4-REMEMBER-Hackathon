@@ -3,9 +3,13 @@ package dev.laterre.nyamnyam.post.controller;
 import dev.laterre.nyamnyam.member.service.MemberService;
 import dev.laterre.nyamnyam.post.dto.PostDto;
 import dev.laterre.nyamnyam.post.dto.PostUpdateDto;
+import dev.laterre.nyamnyam.post.entity.Post;
+import dev.laterre.nyamnyam.post.repository.PostRepository;
 import dev.laterre.nyamnyam.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,10 +17,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/remember/post")
 public class PostController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
     private final MemberService memberService;
 
 
@@ -60,4 +65,17 @@ public class PostController {
         postService.deletePost(id);
         log.info("boardId: {}", boardId);
     }
+
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<Post>> getPostsByBoard(
+            @RequestParam("boardId") Long boardId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "6") int size) {
+
+        Page<Post> posts = postService.getPostsByBoard(boardId, page, size);
+        return ResponseEntity.ok(posts);
+    }
+
+
 }

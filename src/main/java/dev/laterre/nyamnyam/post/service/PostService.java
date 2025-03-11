@@ -7,6 +7,9 @@ import dev.laterre.nyamnyam.post.dto.PostUpdateDto;
 import dev.laterre.nyamnyam.post.entity.Post;
 import dev.laterre.nyamnyam.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -124,8 +127,17 @@ public class PostService {
     }
 
     // 특정 게시글 삭제
-    @Transactional
+    @Transactional(readOnly = true)
     public void deletePost(Long id) {
         postRepository.deleteById(id);
     }
+
+
+
+    public Page<Post> getPostsByBoard(Long boardId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return postRepository.findByBoardId(boardId, pageable);
+    }
+
+
 }
