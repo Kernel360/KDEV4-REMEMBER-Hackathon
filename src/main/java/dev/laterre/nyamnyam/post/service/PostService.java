@@ -33,6 +33,7 @@ public class PostService {
     private final LikesRepository likesRepository;
 
     // 게시글 저장(생성)
+    @Transactional(readOnly = true)
     public PostDto save(PostDto postDto) {
         PostEntity postEntity = new PostEntity();
         postEntity.setBoardId(postDto.getBoardId());
@@ -55,6 +56,7 @@ public class PostService {
     }
 
     // 게시판별 모든 게시글 조회
+    @Transactional(readOnly = true)
     public List<PostDto> findPosts(Long boardId) {
         List<PostEntity> postEntities = postRepository.findByBoardId(boardId);
         try {
@@ -84,6 +86,7 @@ public class PostService {
     }
 
     // 특정 게시글 조회
+    @Transactional(readOnly = true)
     public PostDto findPost(Long id) {
         Optional<PostEntity> postOptional = postRepository.findById(id);
 
@@ -109,6 +112,7 @@ public class PostService {
         }
     }
 
+    @Transactional(readOnly = true)
     public PostDto findTopPost(Long boardId) {
         List<PostEntity> postEntities = postRepository.findByBoardId(boardId);
             List<PostDto> postDtoList = postEntities.stream()
@@ -174,6 +178,7 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public Page<PostEntity> getPostsByBoard(Long boardId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return postRepository.findByBoardId(boardId, pageable);
