@@ -82,10 +82,10 @@ public class PostController {
     }
 
     // 특정 게시글 삭제
-    @DeleteMapping("/{boardId}/{id}")
-    public void deletePost(@PathVariable("boardId") Long boardId, @PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public void deletePost( @PathVariable("id") Long id) {
         postService.deletePost(id);
-        log.info("boardId: {}", boardId);
+        log.info("boardId: {}", id);
     }
 
     // /page/1?page=2&size=6
