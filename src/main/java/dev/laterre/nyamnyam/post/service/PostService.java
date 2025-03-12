@@ -180,7 +180,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<PostEntity> getPostsByBoard(Long boardId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);;
+        Pageable pageable = PageRequest.of(page, size);
         return postRepository.findByBoardId(boardId, pageable);
     }
 

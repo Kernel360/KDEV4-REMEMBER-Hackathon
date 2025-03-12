@@ -84,7 +84,7 @@ public class PostController {
     // /page/1?page=2&size=6
     @GetMapping("/page/{boardId}")
     public ResponseEntity<Page<PostEntity>> getPostsByBoard(
-            @PathVariable(name="boardId") Long boardId,
+            @PathVariable("boardId") Long boardId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size
     ) {
