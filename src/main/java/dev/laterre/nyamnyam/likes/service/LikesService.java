@@ -13,7 +13,6 @@ public class LikesService {
 
     private final LikesRepository likesRepository;
 
-    @Transactional
     public Api likesPost(Long memberId, Long postId) {
 
         if (likesRepository.existsByMemberIdAndPostId(memberId, postId)) {
@@ -36,7 +35,6 @@ public class LikesService {
     }
 
 
-    @Transactional
     public long countLikesByPostId(Long postId) {
         return likesRepository.countByPostId(postId);
     }

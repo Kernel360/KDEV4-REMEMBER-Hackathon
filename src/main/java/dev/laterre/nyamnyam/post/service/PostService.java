@@ -33,7 +33,6 @@ public class PostService {
     private final LikesRepository likesRepository;
 
     // 게시글 저장(생성)
-    @Transactional
     public PostDto save(PostDto postDto) {
         PostEntity postEntity = new PostEntity();
         postEntity.setBoardId(postDto.getBoardId());
@@ -110,7 +109,6 @@ public class PostService {
         }
     }
 
-    @Transactional
     public PostDto findTopPost(Long boardId) {
         List<PostEntity> postEntities = postRepository.findByBoardId(boardId);
             List<PostDto> postDtoList = postEntities.stream()
@@ -139,7 +137,6 @@ public class PostService {
     }
 
     // 특정 게시글 수정
-    @Transactional
     public PostDto updatePost(Long id, PostUpdateDto postUpdateDto) {
         // TODO postUpdateDto에 파일 수정 넣을지 말지
         Optional<PostEntity> post = postRepository.findById(id);
@@ -173,7 +170,6 @@ public class PostService {
     }
 
     // 특정 게시글 삭제
-    @Transactional
     public void deletePost(Long id) {
         postRepository.deleteById(id);
     }
