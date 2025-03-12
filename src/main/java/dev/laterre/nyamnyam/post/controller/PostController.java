@@ -49,6 +49,13 @@ public class PostController {
         return postService.findPosts(boardId);
     }
 
+    @GetMapping("/shop/{shopName}")
+    public List<PostDto> getPostsByShopName(
+            @PathVariable("shopName") String shopName
+    ) {
+        return postService.findPostByShopName(shopName);
+    }
+
     // 특정 게시글 조회
     @GetMapping("/id/{id}")
     public PostDto getPost(@PathVariable("id") Long id) {
@@ -88,7 +95,7 @@ public class PostController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "4") int size
     ) {
-
+        log.info("getPostsByBoard: {} ", page);
         Page<PostEntity> posts = postService.getPostsByBoard(boardId, page, size);
         return ResponseEntity.ok(posts);
     }

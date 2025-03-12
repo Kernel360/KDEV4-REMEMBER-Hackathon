@@ -85,6 +85,36 @@ public class PostService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<PostDto> findPostByShopName(String shopName) {
+        List<PostEntity> postEntities = postRepository.findByShopNameContaining(shopName);
+
+        try {
+            List<PostDto> postDtoList = postEntities.stream()
+                    .map(post -> {
+                        PostDto postDto = new PostDto();
+                        postDto.setId(post.getId());
+                        postDto.setBoardId(post.getBoardId());
+                        postDto.setMemberId(post.getMember().getId());
+                        postDto.setNickname(post.getMember().getNickname());
+                        postDto.setAddress(post.getAddress());
+                        postDto.setShopName(post.getShopName());
+                        postDto.setCategory(post.getCategory());
+                        postDto.setTitle(post.getTitle());
+                        postDto.setContent(post.getContent());
+                        postDto.setMediaData(post.getMediaData());
+                        postDto.setLikes(likesRepository.countByPostId(post.getId()));
+
+                        return postDto;
+                    }).collect(Collectors.toList());
+            log.info("postDtoList : {}", postDtoList);
+            return postDtoList;
+        } catch (Exception e) {
+            List<PostDto> list = new ArrayList<>();
+            return list;
+        }
+    }
+
     // 특정 게시글 조회
     @Transactional(readOnly = true)
     public PostDto findPost(Long id) {
@@ -181,7 +211,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public Page<PostEntity> getPostsByBoard(Long boardId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return postRepository.findByBoardId(boardId, pageable);
+        return postRepository.findPagedByBoardId(boardId, pageable);
     }
 
     public String encodeFileToBase64(MultipartFile file) {

@@ -11,5 +11,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     public List<PostEntity> findByBoardId(Long boardId);
 
-    Page<PostEntity> findByBoardId(Long boardId, Pageable pageable);
+    public List<PostEntity> findByShopNameContaining(String shopName);
+
+    Page<PostEntity> findPagedByBoardId(Long boardId, Pageable pageable);
 }
