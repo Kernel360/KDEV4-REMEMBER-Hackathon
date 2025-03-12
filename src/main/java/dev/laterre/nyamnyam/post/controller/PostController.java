@@ -3,10 +3,13 @@ package dev.laterre.nyamnyam.post.controller;
 import dev.laterre.nyamnyam.member.service.MemberService;
 import dev.laterre.nyamnyam.post.dto.PostDto;
 import dev.laterre.nyamnyam.post.dto.PostUpdateDto;
+import dev.laterre.nyamnyam.post.model.PostEntity;
 import dev.laterre.nyamnyam.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,5 +79,16 @@ public class PostController {
     public void deletePost(@PathVariable("boardId") Long boardId, @PathVariable("id") Long id) {
         postService.deletePost(id);
         log.info("boardId: {}", boardId);
+    }
+
+    // /page/1?page=2&size=6
+    @GetMapping("/page/{boardId}")
+    public ResponseEntity<Page<PostEntity>> getPostsByBoard(
+            @PathVariable(name="boardId") Long boardId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "6") int size) {
+
+        Page<PostEntity> posts = postService.getPostsByBoard(boardId, page, size);
+        return ResponseEntity.ok(posts);
     }
 }

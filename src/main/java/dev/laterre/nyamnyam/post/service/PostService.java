@@ -9,6 +9,7 @@ import dev.laterre.nyamnyam.post.model.PostEntity;
 import dev.laterre.nyamnyam.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -175,6 +176,11 @@ public class PostService {
     @Transactional
     public void deletePost(Long id) {
         postRepository.deleteById(id);
+    }
+
+    public Page<PostEntity> getPostsByBoard(Long boardId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return postRepository.findByBoardId(boardId, pageable);
     }
 
     public String encodeFileToBase64(MultipartFile file) {
