@@ -86,7 +86,8 @@ public class PostController {
     public ResponseEntity<Page<PostEntity>> getPostsByBoard(
             @PathVariable(name="boardId") Long boardId,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "6") int size) {
+            @RequestParam(name = "size", defaultValue = "4") int size
+    ) {
 
         Page<PostEntity> posts = postService.getPostsByBoard(boardId, page, size);
         return ResponseEntity.ok(posts);
